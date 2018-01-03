@@ -10,7 +10,7 @@ module.exports = {
       var articles = data;
       for (var i=0; i<articles.length; i++) {
         articles[i].date = makeDate;
-        artciles[i].saved = false;
+        articles[i].saved = false;
       }
 
       Headline.collection.insertMany(articles, {ordered:false}, function(err, docs){
