@@ -2,29 +2,35 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
-// handlebars
 const exphbs = require("express-handlebars");
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
 
-// scraping tools
-const cheerio = require("cheerio");
 
-// models
-const db = require("./models");
-const PORT = 3000;
+// const db = require("./models");
+const PORT = process.env.PORT || 3000;
 
 //Initialize Express
 const app = express();
 
-// Body Parser for Form Submissions
-app.use(bodyParser.urlencoded({ extended: false }));
+const router = express.Router();
+
+require("./config/routes")(router);
 
 // Use express.static to serve the public folder as a static directory
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 
-// Connect to the Mongo DB with mongoose
+// handlebars
+app.engine("handlebars", exphbs({ 
+  defaultLayout: "main" 
+}));
+app.set("view engine", "handlebars");
+
+// Body Parser for Form Submissions
+app.use(bodyParser.urlencoded({ 
+  extended: false 
+}));
+
+app.use(router);
+
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://localhost/news-scraper-delight", {
   useMongoClient: true
@@ -34,3 +40,39 @@ mongoose.connect("mongodb://localhost/news-scraper-delight", {
 app.listen(PORT, function() {
   console.log("App running on port " + PORT);
 });
+
+
+
+
+
+
+
+// // Routes
+// const articleRoutes = require("./config/routes.js");
+
+
+// // scraping tools
+// const cheerio = require("cheerio");
+
+
+
+
+
+
+
+// // register routes
+// app.use("/articles", articleRoutes);
+
+
+// Connect to the Mongo DB with mongoose
+// const db = process.env.MONGODB_URI || "mongodb://localhost/news-scraper-delight"
+// mongoose.connect(db, function(error) {
+//   if (error) {
+//     console.log(error);
+//   }
+//   else {
+//     console.log("mongoose connection is successful");
+//   }
+// });
+
+
