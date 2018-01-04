@@ -1,7 +1,7 @@
 var scrape = require("../scripts/scrape");
 var makeDate = require("../scripts/date");
 
-var HeadLine = require("../models/Headline");
+var Headline = require("../models/Headline");
 
 module.exports = {
 
@@ -29,6 +29,10 @@ module.exports = {
       _id: -1
     })
     .exec(function(err, doc) {
+      if (err) {
+        console.log("error: ", err);
+        return;
+      }
       cb(doc);
     });
   },
